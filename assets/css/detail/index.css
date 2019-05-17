@@ -1,0 +1,40 @@
+/*
+Error: Invalid GBK character "\xEF"
+        on line 117 of index.scss
+
+112:               font-size: 30px;
+113:               color: #F60;
+114:               margin-right: 10px;
+115: 
+116:               &:before {
+117:                 content: "￥";
+118:                 font-size: 14px;
+119:               }
+120:             }
+121:           }
+122:         }
+
+Backtrace:
+index.scss:117
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/util.rb:814:in `check_sass_encoding'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:387:in `run'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:63:in `process_result'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
+d:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.3/bin/sass:13:in `<top (required)>'
+d:/Ruby25-x64/bin/sass:23:in `load'
+d:/Ruby25-x64/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xEF\"\A         on line 117 of index.scss\A \A 112:               font-size: 30px;\A 113:               color: #F60;\A 114:               margin-right: 10px;\A 115: \A 116:               &:before {\A 117:                 content: \"￥\";\A 118:                 font-size: 14px;\A 119:               }\A 120:             }\A 121:           }\A 122:         }"; }

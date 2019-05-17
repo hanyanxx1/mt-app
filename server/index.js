@@ -7,7 +7,7 @@ const app = new Koa()
 import config from '../nuxt.config'
 config.dev = !(app.env === 'production')
 
-async function start () {
+async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 

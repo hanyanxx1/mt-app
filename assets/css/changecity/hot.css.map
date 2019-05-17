@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACE,WAAG;EACD,OAAO,EAAE,IAAI;EAEb,cAAG;IACD,SAAS,EAAE,IAAI;IACf,KAAK,EAAE,IAAI;IACX,WAAW,EAAE,GAAG;EAGlB,cAAG;IACD,MAAM,EAAE,MAAM;IACd,KAAK,EAAE,IAAI;IACX,WAAW,EAAE,IAAI",
+"sources": ["hot.scss"],
+"names": [],
+"file": "hot.css"
+}

@@ -1,4 +1,6 @@
-const pkg = require('./package')
+import pkg from './package'
+
+global.HTMLElement = typeof window === 'undefined' ? Object : window.HTMLElement
 
 module.exports = {
   mode: 'universal',
@@ -26,8 +28,8 @@ module.exports = {
    */
   css: [
     'element-ui/lib/theme-chalk/reset.css',
-    'element-ui/lib/theme-chalk/index.css'
-    // '~assets/css/main.css'
+    'element-ui/lib/theme-chalk/index.css',
+    '@/assets/css/main.css'
   ],
 
   /*
@@ -58,7 +60,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {
+    extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
@@ -70,6 +72,6 @@ module.exports = {
       }
     },
 
-    cache: true
+    cache: false
   }
 }
