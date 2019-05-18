@@ -1,4 +1,6 @@
-const pkg = require('./package')
+import pkg from './package'
+
+global.HTMLElement = typeof window === 'undefined' ? Object : window.HTMLElement
 
 module.exports = {
   mode: 'universal',
@@ -26,8 +28,8 @@ module.exports = {
    */
   css: [
     'element-ui/lib/theme-chalk/reset.css',
-    'element-ui/lib/theme-chalk/index.css'
-    // '~assets/css/main.css'
+    'element-ui/lib/theme-chalk/index.css',
+    '@/assets/css/main.css'
   ],
 
   /*
@@ -70,6 +72,6 @@ module.exports = {
       }
     },
 
-    cache: true
+    cache: false
   }
 }
