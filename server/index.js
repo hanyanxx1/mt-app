@@ -2,12 +2,12 @@ import Koa from 'koa'
 import consola from 'consola'
 import { Nuxt, Builder } from 'nuxt'
 
-const app = new Koa()
-
 import config from '../nuxt.config'
+
+const app = new Koa()
 config.dev = !(app.env === 'production')
 
-async function start () {
+async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 
