@@ -2,7 +2,7 @@ import pkg from './package'
 
 global.HTMLElement = typeof window === 'undefined' ? Object : window.HTMLElement
 
-module.exports = {
+export default {
   mode: 'universal',
 
   /*
@@ -44,11 +44,19 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
+
+  env: {
+    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT ||
+      3000}`
+  },
+
   /*
    ** Axios module configuration
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT ||
+      3000}`
   },
 
   /*

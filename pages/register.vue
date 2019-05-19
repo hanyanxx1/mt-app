@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import CrypToJS from 'crypto-js'
+import axios from '../plugins/axios'
 export default {
   name: 'Register',
   layout: 'blank',
@@ -118,10 +120,84 @@ export default {
   },
   methods: {
     sendMsg() {
-      // todo 发送验证码
+      const self = this
+      let namePass
+      let emailPass
+      // timerid 用于存放验证码发送后 处理 剩余等待时间的定时器
+      // 如果一上来发现timerid存在，即有定时器在运行，说明上次发送验证码的等待事假还没过，就不能继续执行注册
+      if (self.timerid) {
+        return false
+      }
+      // 检查用户名是否通过了 validate 非空校验
+      // 很奇葩的一点  如果验证不通过 ，返回的valid 才有有值   - -!
+      // 所以下面在做判断是，要以!val来做判断 ， 即 !(''==>false) === true 才通过
+      this.$refs.ruleForm.validateField('name', valid => {
+        namePass = valid
+      })
+      // 此值用来记录验证码发送后的状态信息
+      self.statusMsg = ''
+      // 如果有值 ，即验证不通过，则返回
+      if (namePass) {
+        return false
+      }
+      this.$refs.ruleForm.validateField('email', valid => {
+        emailPass = valid
+      })
+      // 他两个都没值 （都通过）
+      if (!namePass && !emailPass) {
+        // 这个地方之所以能直接调用，是因为我们在配置nuxt的时候，选中了axios功能
+        // 所以直接将$axios 绑定到了 实例上
+        axios
+          .post('/users/verify', {
+            // 要注意用户名中文问题
+            username: window.encodeURIComponent(self.ruleForm.name),
+            email: self.ruleForm.email
+          })
+          .then(({ status, data }) => {
+            console.log(status, data)
+            if (status === 200 && data && data.code === 0) {
+              let count = 60
+              // 登录成功启动定时器
+              self.statusMsg = `验证码已发送,剩余${count--}秒`
+              self.timerid = setInterval(function() {
+                self.statusMsg = `验证码已发送,剩余${count--}秒`
+                if (count === 0) {
+                  clearInterval(self.timerid)
+                }
+              }, 1000)
+            } else {
+              self.statusMsg = data.msg
+            }
+          })
+      }
     },
     register() {
-      // todo 注册
+      const self = this
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          axios
+            .post('/users/signup', {
+              username: window.encodeURIComponent(self.ruleForm.name),
+              password: CrypToJS.MD5(self.ruleForm.pwd).toString(),
+              email: self.ruleForm.email,
+              code: self.ruleForm.code
+            })
+            .then(({ status, data }) => {
+              if (status === 200) {
+                if (data && data.code === 0) {
+                  location.href = '/login'
+                } else {
+                  self.error = data.message
+                }
+              } else {
+                self.error = `服务器出错,错误码:${status}`
+              }
+              setTimeout(function() {
+                self.error = ''
+              }, 1500)
+            })
+        }
+      })
     }
   }
 }

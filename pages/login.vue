@@ -30,9 +30,43 @@
 </template>
 
 <script>
+import CryptoJS from 'crypto-js'
+import axios from '../plugins/axios'
 export default {
   name: 'Login',
-  layout: 'blank'
+  layout: 'blank',
+  data: () => {
+    return {
+      checked: '',
+      username: '',
+      password: '',
+      error: ''
+    }
+  },
+  methods: {
+    login() {
+      const self = this
+      axios
+        .post('/users/signin', {
+          username: window.encodeURIComponent(self.username),
+          password: CryptoJS.MD5(self.password).toString()
+        })
+        .then(({ status, data }) => {
+          if (status === 200) {
+            if (data && data.code === 0) {
+              location.href = '/'
+            } else {
+              self.error = data.message
+            }
+          } else {
+            self.error = `服务器出错`
+          }
+          setTimeout(() => {
+            self.error = ''
+          }, 1500)
+        })
+    }
+  }
 }
 </script>
 

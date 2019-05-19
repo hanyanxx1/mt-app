@@ -12,11 +12,26 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
 export default {
   name: 'User',
   data() {
     return {
       user: ''
+    }
+  },
+  async mounted() {
+    const {
+      status,
+      data: {
+        code,
+        data: { user }
+      }
+    } = await axios.get('/users/getUser')
+    if (status === 200) {
+      if (code === 0) {
+        this.user = window.decodeURIComponent(user)
+      }
     }
   }
 }

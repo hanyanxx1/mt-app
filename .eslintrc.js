@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     'nuxt/no-cjs-in-config': 'off',
     'no-console': 'off',
-    'prettier/prettier': 'off'
+    'prettier/prettier': 'off',
+    'max-len': ['error', { code: 200 }]
   }
 }
