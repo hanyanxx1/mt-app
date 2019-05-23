@@ -57,7 +57,7 @@
 
 <script>
 import CrypToJS from 'crypto-js'
-import axios from '../plugins/axios'
+import axios from '@/plugins/axios'
 export default {
   name: 'Register',
   layout: 'blank',
@@ -154,16 +154,17 @@ export default {
             email: self.ruleForm.email
           })
           .then(({ status, data }) => {
-            console.log(status, data)
             if (status === 200 && data && data.code === 0) {
               let count = 60
               // 登录成功启动定时器
-              self.statusMsg = `验证码已发送,剩余${count--}秒`
+              // self.statusMsg = `验证码已发送,剩余${count--}秒`
               self.timerid = setInterval(function() {
-                self.statusMsg = `验证码已发送,剩余${count--}秒`
+                count = count - 1
                 if (count === 0) {
                   clearInterval(self.timerid)
+                  self.timerid = null
                 }
+                self.statusMsg = `验证码已发送,剩余${count}秒`
               }, 1000)
             } else {
               self.statusMsg = data.msg

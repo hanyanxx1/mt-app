@@ -38,5 +38,11 @@ export default {
     get port() {
       return 587
     }
+  },
+  ipUrl: {
+    url: 'http://ip-api.com/json/'
+  },
+  baiduAk: {
+    ak: '2rQSopYO9RVl8abNGz3APRXLSiRymmPD&coor=bd09ll'
   }
 }

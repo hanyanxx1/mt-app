@@ -2,20 +2,21 @@
   <section class="m-istyle">
     <dl @mouseover="over">
       <dt>有格调</dt>
-      <dd :class="{ active: kind === 'all' }" kind="all" keyword="景点">
+      <dd :class="{ active: kind === 'all' }" kind="all" keyword="全部">
         全部
       </dd>
-      <dd :class="{ active: kind === 'part' }" kind="part" keyword="美食">
+      <dd :class="{ active: kind === 'part' }" kind="feast" keyword="约会聚餐">
         约会聚餐
       </dd>
-      <dd :class="{ active: kind === 'spa' }" kind="spa" keyword="丽人">
+      <dd :class="{ active: kind === 'spa' }" kind="spa" keyword="丽人spa">
         丽人SPA
       </dd>
-      <dd :class="{ active: kind === 'movie' }" kind="movie" keyword="电影">
+      <dd
+        :class="{ active: kind === 'movie' }"
+        kind="journey"
+        keyword="电影演出"
+      >
         电影演出
-      </dd>
-      <dd :class="{ active: kind === 'travel' }" kind="travel" keyword="旅游">
-        品质出游
       </dd>
     </dl>
     <ul class="ibody">
@@ -44,10 +45,9 @@ export default {
       kind: 'all',
       list: {
         all: [],
-        part: [],
+        feast: [],
         spa: [],
-        movie: [],
-        travel: []
+        journey: []
       }
     }
   },
@@ -56,67 +56,40 @@ export default {
       return this.list[this.kind]
     }
   },
-  async mounted() {
-    const self = this
-    const {
-      status,
-      data: { count, pois }
-    } = await self.$axios.get('/search/resultsByKeywords', {
-      params: {
-        keyword: '景点',
-        city: self.$store.state.geo.position.city
-      }
-    })
-    if (status === 200 && count > 0) {
-      const r = pois
-        .filter(item => item.photos.length)
-        .map(item => {
-          return {
-            title: item.name,
-            pos: item.type.split(';')[0],
-            price: item.biz_ext.cost || '暂无',
-            img: item.photos[0].url,
-            url: '//abc.com'
-          }
-        })
-      self.list[self.kind] = r.slice(0, 9)
-    } else {
-      self.list[self.kind] = []
-    }
+  mounted() {
+    this.getData(this.kind)
   },
   methods: {
-    over: async function(e) {
+    over(e) {
       const dom = e.target
       const tag = dom.tagName.toLowerCase()
-      const self = this
       if (tag === 'dd') {
         this.kind = dom.getAttribute('kind')
-        const keyword = dom.getAttribute('keyword')
-        const {
-          status,
-          data: { count, pois }
-        } = await self.$axios.get('/search/resultsByKeywords', {
-          params: {
-            keyword,
-            city: self.$store.state.geo.position.city
+        if (this.list[this.kind].length > 0) {
+          return
+        }
+        this.getData(this.kind)
+      }
+    },
+    async getData(tab) {
+      const self = this
+      const { status, data } = await self.$axios.get(
+        '/search/resultsByKeywords',
+        { params: { tab } }
+      )
+      if (status === 200) {
+        const currentTabData = data.data.map(item => {
+          return {
+            title: item.title,
+            pos: item.bottomInfo,
+            price: item.currentPrice,
+            img:
+              'https://p1.meituan.net/mogu/4aa363a920b92b922cfaa0298bcfbb65101055.jpg@368w_208h_1e_1c'
           }
         })
-        if (status === 200 && count > 0) {
-          const r = pois
-            .filter(item => item.photos.length)
-            .map(item => {
-              return {
-                title: item.name,
-                pos: item.type.split(';')[0],
-                price: item.biz_ext.cost || '暂无',
-                img: item.photos[0].url,
-                url: '//abc.com'
-              }
-            })
-          self.list[self.kind] = r.slice(0, 9)
-        } else {
-          self.list[self.kind] = []
-        }
+        self.list[data.tab.tab] = currentTabData
+      } else {
+        self.list[self.kind] = []
       }
     }
   }

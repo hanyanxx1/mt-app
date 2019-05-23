@@ -4,8 +4,8 @@ import nodeMailer from 'nodemailer'
 import User from '../dbs/models/users'
 import { SuccessModel, ErrorModel } from '../dbs/models/resModel'
 import Email from '../dbs/config'
-import Passport from './utils/passport'
 import axios from './utils/axios'
+import Passport from './utils/passport'
 
 const router = new Router({
   prefix: '/users'
@@ -85,12 +85,7 @@ router.post('/signin', (ctx, next) => {
 // 验证信息
 router.post('/verify', async (ctx, next) => {
   const username = ctx.request.body.username
-
-  console.log(username)
-
   const saveExpire = await Store.hget(`nodemail:${username}`, 'expire')
-
-  console.log(saveExpire)
   // 如果当前验证时间，小于过期时间，表明请求过于频繁，限制一段时间(saveExpire)执行一次
   if (saveExpire && new Date().getTime() - saveExpire < 0) {
     ctx.body = new ErrorModel('验证请求过于频繁,1分钟内1次')

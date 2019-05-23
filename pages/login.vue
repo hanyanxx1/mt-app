@@ -31,7 +31,7 @@
 
 <script>
 import CryptoJS from 'crypto-js'
-import axios from '../plugins/axios'
+import axios from '@/plugins/axios'
 export default {
   name: 'Login',
   layout: 'blank',

@@ -2,10 +2,12 @@
   <div class="search-panel">
     <el-row class="m-header-searchbar">
       <el-col :span="3" class="left"
-        ><img
+        ><a href="/">
+        <img
           src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/logo.png"
           alt="美团"
-      /></el-col>
+        />
+      </a></el-col>
       <el-col :span="15" class="center">
         <div class="wrapper">
           <el-input
@@ -20,18 +22,28 @@
           </button>
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, index) in hotPlace" :key="index">{{ item }}</dd>
+            <dd v-for="(item, index) in hotPlace" :key="index">
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)">{{
+                item.name
+              }}</a>
+            </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
-            <dd v-for="(item, index) in searchList" :key="index">{{ item }}</dd>
+            <dd v-for="(item, index) in searchList" :key="index">
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)">{{
+                item.name
+              }}</a>
+            </dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href="#">故宫博物院</a>
-          <a href="#">故宫博物院</a>
-          <a href="#">故宫博物院</a>
-          <a href="#">故宫博物院</a>
-          <a href="#">故宫博物院</a>
+          <a
+            v-for="(item, idx) in hotPlace"
+            :key="idx"
+            :href="'/products?keyword=' + encodeURIComponent(item.name)"
+          >
+            {{ item.name }}
+          </a>
         </p>
         <ul class="nav">
           <li><nuxt-link to="/" class="takeout">美团外卖</nuxt-link></li>
@@ -62,14 +74,17 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import axios from '@/plugins/axios'
+import { mapState } from 'vuex'
 export default {
   name: 'Search',
   data() {
     return {
       search: '',
       isFocus: false,
-      hotPlace: ['火锅', '火锅', '火锅'],
-      searchList: ['故宫', '故宫', '故宫']
+      // hotPlace: [],
+      searchList: []
     }
   },
   computed: {
@@ -78,7 +93,11 @@ export default {
     },
     isSearchList() {
       return this.isFocus && this.search
-    }
+    },
+    ...mapState({
+      city: state => state.geo.position.city,
+      hotPlace: state => state.home.hotPlace.slice(0, 5)
+    })
   },
   methods: {
     focus() {
@@ -90,9 +109,22 @@ export default {
         self.isFocus = false
       }, 200)
     },
-    input() {
-      // todo 接收数据
-    }
+    input: _.debounce(async function() {
+      const self = this
+      self.searchList = []
+      const {
+        status,
+        data: { top }
+      } = await axios.get('/search/top', {
+        params: {
+          input: self.search,
+          city: self.city
+        }
+      })
+      if (status === 200) {
+        self.searchList = top.slice(0, 10)
+      }
+    }, 300)
   }
 }
 </script>

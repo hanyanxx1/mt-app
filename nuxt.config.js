@@ -56,7 +56,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT ||
-      3000}`
+      3000}`,
   },
 
   /*
