@@ -5,9 +5,9 @@
   "author": "hanyan",
   "private": true,
   "scripts": {
-    "dev:base": "cross-env NODE_ENV=development HOST=10.9.69.232 nodemon server/index.js --exec babel-node",
+    "dev:base": "cross-env NODE_ENV=development HOST=10.9.65.182 nodemon server/index.js --exec babel-node",
     "build": "nuxt build",
-    "start:base": "cross-env NODE_ENV=production HOST=10.9.69.232 nodemon server/index.js --exec babel-node",
+    "start:base": "cross-env NODE_ENV=production HOST=10.9.65.182 nodemon server/index.js --exec babel-node",
     "debugger": "cross-env node --inspect-brk server/index.js --exec babel-node",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
