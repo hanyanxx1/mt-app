@@ -4,7 +4,7 @@ import geo from './modules/geo'
 import user from './modules/user'
 import home from './modules/home'
 
-Vue.use(Vuex)
+Vue.use(Vuex) 
 
 const store = () =>
   new Vuex.Store({
